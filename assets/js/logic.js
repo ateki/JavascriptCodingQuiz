@@ -58,7 +58,7 @@ const MSG_FEEDBACK_CORRECT = 'Correct!';
 /* Error messages */
 const INITIALS_INPUT_ALPHA_ERROR = "Input Error: Initials should be alpha characters only.   Please try again."
 
-const STARTING_TIME_IN_SECS = 60;       // 10 secs per question 
+const STARTING_TIME_IN_SECS = 60;       // 10 secs per question.
 const TIME_DEDUCTED_WRONG_ANSWER = 10;  // Number of seconds deducted on wrong answer.
 
 
