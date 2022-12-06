@@ -16,7 +16,6 @@
 // TODO: displayANswerOptions data-correct set to boolean rather than string
 // TODO: Rename displayAnswerOptions as  displayAnswerChoices? 
 // TODO Event listeners anon functions replaced with named functions
-// TODO Surely if get all answers wrong and still time left should get score of 0.
 
 
 /** -------------------------------------------------------------
@@ -59,10 +58,7 @@ const MSG_FEEDBACK_CORRECT = 'Correct!';
 /* Error messages */
 const INITIALS_INPUT_ALPHA_ERROR = "Input Error: Initials should be alpha characters only.   Please try again."
 
-//const STARTING_TIME_IN_SECS = 10;
-//const TIME_DEDUCTED_WRONG_ANSWER = 3;  
-
-const STARTING_TIME_IN_SECS = 70;
+const STARTING_TIME_IN_SECS = 60;       // 10 secs per question
 const TIME_DEDUCTED_WRONG_ANSWER = 10;  // Number of seconds deducted on wrong answer.
 
 
@@ -164,8 +160,6 @@ function endGame() {
     hide(questionsScreen);
     show(feedback);         // required for final question answer
     show(endScreen);
-
-    //console.log('game ended');
     finalScore.innerText = getFinalScore();            
 }
 
@@ -331,25 +325,10 @@ function displayQuestion(currQuestion) {
 function questionsFinished() {
 
     if (currentQuestionIdx < questions.length-1) {
-            /*         console.log(`
-                        currentQuestionIdx = ${currentQuestionIdx}
-                        questions.length = ${questions.length}
-                        questionsFInished returns false
-                    `); */
         return false;
     } else {
-            /*         console.log(`
-                        currentQuestionIdx = ${currentQuestionIdx}
-                        questions.length = ${questions.length}
-                        questionsFInished returns true
-                    `); */
         return true;
     }
-            /*     if (currentQuestionIdx >= questions.length-1) {
-                    return true; 
-                } else {
-                    return false;
-                } */
 }
 
 
@@ -363,10 +342,9 @@ function displayNextQuestion() {
 
     //if(secondsLeft > 0 && !questionsFinished()) {
     // IA 6/12 if (!isQuizFinished()) {
+
     if (!questionsFinished()) {
         currentQuestionIdx++;
-        //console.log(`displayNextQuestion idx = ${currentQuestionIdx}`);
-        //console.log(questions[currentQuestionIdx]);
         displayQuestion(questions[currentQuestionIdx]);
     } 
 }
@@ -384,11 +362,8 @@ function displayNextQuestion() {
 startBtn.addEventListener('click', function() {
 
     startGame();
-
     setTime(); 
-
     displayQuestion(questions[currentQuestionIdx]);
-
 });
 
 
@@ -402,19 +377,12 @@ startBtn.addEventListener('click', function() {
  * @param {Checks if} event 
  */
 function checkAnswer(event) {
-  
-    // Check custom attribute to see if clicked element is correct answer
-    var isCorrect = event.target.getAttribute('data-correct');
-        
-    /*     console.log(`checkAnswer():
-                isCorrect = ${isCorrect}
-                event.target = ${event.target}`
-        ); */
-    
-   
+
     var msg;
     var audio;
-
+    // Check custom attribute to see if clicked element is correct answer
+    var isCorrect = event.target.getAttribute('data-correct');
+  
     if (isCorrect==="true") {
         audio= AUDIO_FILE_CORRECT;
         msg = MSG_FEEDBACK_CORRECT;
@@ -422,14 +390,8 @@ function checkAnswer(event) {
         audio= AUDIO_FILE_WRONG;
         msg = MSG_FEEDBACK_WRONG;
         if (secondsLeft >= TIME_DEDUCTED_WRONG_ANSWER) {
-            secondsLeft = secondsLeft - TIME_DEDUCTED_WRONG_ANSWER;   
-            /* console.log(`checkAnswer():
-                secondsLeft = secondsLeft - TIME_DEDUCTED_WRONG_ANSWER gives ${secondsLeft}
-            `); */
+            secondsLeft = secondsLeft - TIME_DEDUCTED_WRONG_ANSWER; 
         } else {
-           /* console.log(`checkAnswer():
-                secondsLeft = 0
-            `);*/
             secondsLeft = 0;
         }
     }
@@ -448,7 +410,6 @@ function checkAnswer(event) {
 function displayFeedback(msg) {
     feedback.innerText= msg;
     show(feedback);
-    //console.log(msg);
 }
 
 function clearFeedback() {
@@ -468,33 +429,15 @@ function clearFeedback() {
  */
 choices.addEventListener('click', function(event) {
 
-    /*     console.log(`choices event listener.....
-            calling checkAnswer()
-        `);
- */
     checkAnswer(event);
-    /* 
-        console.log(`choices event listener.....
-            checkAnswer(event) called and finished
-            calling isQuizFinished()
-        `); */
-
     //IA 6/12 if (!isQuizFinished()) {
+
     if (!questionsFinished()) {
-        /*        console.log(`choices event listener.....
-                    displayNExtQuestion to be called
-                    `); */
         displayNextQuestion();
-        /*         console.log(`choices.eventListener():  finished calling displayNextQuestion 
-                            currentQuestionIdx ${currentQuestionIdx}
-                `); */
     }  else {
-
         questionsComplete = true;
-        //console.log(`display all done msg`);
-        endGame();  // should we have a short interval here so they can see feedback?
+        endGame();  
     } 
-
 });
 
 
@@ -508,7 +451,7 @@ choices.addEventListener('click', function(event) {
  *
  */
  submitBtn.addEventListener('click', function () {
-    
+
     try {
         var player_initials= getPlayersInitials();  // what if players returns null
         var player_score = getFinalScore();

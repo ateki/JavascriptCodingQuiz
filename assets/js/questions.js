@@ -1,4 +1,4 @@
-// TODO: Likely remmove answerTxt as checking by using Idx - more prone to error therefore go with answerIdx
+// TODO: Likely remove answerTxt as checking by using Idx - more prone to error therefore go with answerIdx
 
 /**
  * Array of quiz question objects.
@@ -29,7 +29,13 @@ const questions = [
       answerTxt: "quotes"
       },
       
-      { question_text: "A very useful tool used during development and debugging for printing content to the debugger is:",
+      { question_text: "Inside which HTML element do we put the JavaScript?",
+      options: ["<scripting>", "<script>", "<javascript>", "<js>"],
+      answerIdx: 1,
+      answerTxt: "<script>"
+      },
+
+      { question_text: "What is the A very useful tool used during development and debugging for printing content to the debugger is:",
       options: ["Javascript", "terminal / bash", "for loops", "console.log"],
       answerIdx: 3,
       answerTxt: "console.log"
