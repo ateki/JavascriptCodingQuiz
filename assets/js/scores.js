@@ -52,7 +52,6 @@ class HighScoreObject {
 }
 
 
-
 /** -----------------------------------------------
  * Local Storage specific high score helper functions  
  * -------------------------------------------------- 
